@@ -1,0 +1,147 @@
+<!DOCTYPE HTML>
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+
+      layout:decorate="~{${theme + '/templates/main'}}">
+<head>
+    <title>Add Home</title>
+</head>
+<body>
+<th:block layout:fragment="content">
+
+    <div class="col-lg-12">
+        <div class="block">
+            <div class="panel-body list">
+                <h2 th:text="#{page.adding_home}"></h2>
+                <div class="row">
+
+                    <div class="col-lg-6">
+                        <!--/*@thymesVar id="home" type="ua.model.Home"*/-->
+                        <form id="home-add-form" class="form-horizontal" method="post" th:action="@{/home/add-home}" th:object="${home}">
+                            <div class="form-group field-home-city required" th:classappend="${#fields.hasErrors('city')}? 'has-error'">
+                                <div class="col-lg-6">
+                                    <label class="control-label" for="home-city" th:text="#{label.home.city}">City</label>
+                                </div>
+                                <div class="col-lg-6">
+                                    <input id="home-city" type="text" class="form-control" th:field="*{city}" maxlength="25" aria-required="true">
+                                </div>
+                            </div>
+                            <div class="form-group field-home-street required" th:classappend="${#fields.hasErrors('street')}? 'has-error'">
+                                <div class="col-lg-6">
+                                    <label class="control-label" for="home-street" th:text="#{label.home.street}">Street</label>
+                                </div>
+                                <div class="col-lg-6">
+                                    <input id="home-street" type="text" class="form-control" th:field="*{street}" maxlength="25" aria-required="true">
+                                </div>
+                            </div>
+                            <div class="form-group field-home-number required" th:classappend="${#fields.hasErrors('number')}? 'has-error'">
+                                <div class="col-lg-6">
+                                    <label class="control-label" for="home-number" th:text="#{label.home.number}">Number</label>
+                                </div>
+                                <div class="col-lg-6">
+                                    <input id="home-number" type="text" class="form-control" th:field="*{number}" maxlength="25" aria-required="true">
+                                </div>
+                            </div>
+                            <div class="form-group field-home-postcode">
+                                <div class="col-lg-6">
+                                    <label class="control-label" for="home-postcode" th:text="#{label.home.postcode}">Postcode</label>
+                                </div>
+                                <div class="col-lg-6">
+                                    <input id="home-postcode" type="text" class="form-control" th:field="*{postcode}" maxlength="25">
+                                </div>
+                            </div>
+                            <div class="form-group field-home-date_construction">
+                                <div class="col-lg-6">
+                                    <label class="control-label" for="home-date_construction" th:text="#{label.home.date_construction}"></label>
+                                </div>
+                                <div class="col-lg-6">
+                                    <div class="input-group date" data-provide="datepicker">
+                                        <input id="home-date_construction" type="text" class="form-control hasDatepicker" th:field="*{dateConstruction}">
+                                        <div class="input-group-addon">
+                                            <i class="glyphicon glyphicon-calendar"></i>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group field-home-date_last_overhaul">
+                                <div class="col-lg-6">
+                                    <label class="control-label" for="home-date_last_overhaul" th:text="#{label.home.date_last_overhaul}"></label>
+                                </div>
+                                <div class="col-lg-6">
+                                    <div class="input-group date">
+                                        <input id="home-date_last_overhaul" type="text" class="form-control hasDatepicker" th:field="*{dateConstruction}">
+                                        <div class="input-group-addon">
+                                            <i class="glyphicon glyphicon-calendar"></i>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group field-home-area_stairs">
+                                <div class="col-lg-6">
+                                    <label class="control-label" for="home-area_stairs" th:text="#{label.home.area_stairs}">Area Stairs</label>
+                                </div>
+                                <div class="col-lg-6">
+                                    <input id="home-area_stairs" type="text" class="form-control" th:field="*{areaStairs}" maxlength="25">
+                                </div>
+                            </div>
+                            <div class="form-group field-home-area_basement">
+                                <div class="col-lg-6">
+                                    <label class="control-label" for="home-area_basement" th:text="#{label.home.area_basement}">Area Basement</label>
+                                </div>
+                                <div class="col-lg-6">
+                                    <input id="home-area_basement" type="text" class="form-control" th:field="*{areaBasement}" maxlength="25">
+                                </div>
+                            </div>
+                            <div class="form-group field-home-roofing_type">
+                                <div class="col-lg-6">
+                                    <label class="control-label" for="home-roofing_type" th:text="#{label.home.roofing_type}">Roofing Type</label>
+                                </div>
+                                <div class="col-lg-6">
+                                    <input id="home-roofing_type" type="text" class="form-control" th:field="*{roofingType}" maxlength="25">
+                                </div>
+                            </div>
+                            <input type="hidden" id="home-lat" th:field="*{lat}">
+                            <input type="hidden" id="home-lng" th:field="*{lng}">
+                            <button type="submit" class="btn btn-primary" th:text="#{page.save}">Save</button>
+                        </form>
+                    </div>
+
+                    <div class="col-lg-6">
+                        <div id="map" style="min-height: 600px; width: 100%; position: relative; overflow: hidden;"></div>
+                        <script th:src="@{'/resources/' + ${theme} + '/js/gMap.js'}"></script>
+
+                        <script async defer th:src="@{'https://maps.googleapis.com/maps/api/js?key=' + ${@environment.getProperty('google.maps.api.key')} + '&language=' + ${#locale} + '&callback=initMap'}"></script>
+
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script type="text/javascript">
+        $(function () {
+            $(".hasDatepicker").datepicker({
+                format: 'mm/dd/yyyy',
+                changeYear: true,
+                changeMonth: true,
+                yearRange: '1800:2099'
+            });
+        });
+        // $(".hasDatepicker").datepicker({
+        //     format: 'mm/dd/yyyy',
+        //     changeYear: true,
+        //     changeMonth: true,
+        //     yearRange: '1800:2099'
+        // });
+        $(document.body).on('click', '.ui-datepicker-close', function () {
+            var value = $('.ui-datepicker-year :selected').text();
+            $('#home-date_construction').val(value);
+        });
+    </script>
+
+</th:block>
+</body>
+</html>

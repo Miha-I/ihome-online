@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <meta name="_csrf" th:content="${_csrf.token}"/>
+    <meta name="_csrf_header" th:content="${_csrf.headerName}"/>
+
+    <link rel="shortcut icon" type="image/png" href="/resources/home.png"/>
+
+    <script type="text/javascript" src="/resources/jquery-3.4.1/jquery.min.js/"></script>
+    <script type="text/javascript" src="/resources/bootstrap-3.3.7/js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="/resources/sweetalert/sweetalert.min.js"></script>
+    <link rel="stylesheet" type="text/css" href="/resources/sweetalert/sweetalert.css">
+    <link rel="stylesheet" type="text/css" href="/resources/bootstrap-3.3.7/css/bootstrap.min.css"/>
+
+    <!--<script type="text/javascript" src="/resources/jquery-ui-1.12.1/jquery-ui.js"></script>-->
+    <link rel="stylesheet" type="text/css" href="/resources/jquery-ui-1.12.1/jquery-ui.min.css">
+    <link rel="stylesheet" type="text/css" th:href="@{'/resources/' + ${theme} + '/css/main.css'}"/>
+
+
+    <!--<title layout:title-pattern="$LAYOUT_TITLE - $CONTENT_TITLE">Spring Security Thymeleaf</title>-->
+</head>
+<body>
+<div class="wrap">
+    <th:block th:replace="${theme + '/templates/header'} :: header"/>
+    <article class="article">
+        <th:block layout:fragment="content"/>
+    </article>
+    <th:block th:replace="${theme + '/templates/footer'} :: footer"/>
+</div>
+</div>
+</body>
+</html>

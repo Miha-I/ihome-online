@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<body>
+<th:block th:fragment="header">
+    <!-- Menu -->
+    <header class="header">
+        <div class="col-lg-12">
+
+            <div class="text-center name-company">
+                <!--/*@thymesVar id="legalEntity" type="ua.model.LegalEntity"*/-->
+                <h1 th:text="${legalEntity.name}">Company Name</h1>
+                    <th:block th:switch="${legalEntity.type}">
+                        <h4 th:case="${T(ua.model.LegalEntity).TYPE_ENTITY_COMPANY}" th:text="#{label.legalEntity_type_company}">COMPANY</h4>
+                        <h4 th:case="${T(ua.model.LegalEntity).TYPE_ENTITY_HOMEOWNERS}" th:text="#{label.legalEntity_type_homeowners}">HOMEOWNERS</h4>
+                    </th:block>
+            </div>
+
+            <div class="header-menu">
+                <nav>
+                    <div class="nav-wrapper block block-shadow">
+                        <div class="left-menu">
+                            <ul id="nav-menu-header-left" class="nav-menu">
+                                <li class="u-home unselectable">
+                                    <a href="/" class="menu-tab">
+                                        <span class="icon entypo-home scnd-font-color"></span>
+                                        <span th:text="#{navMenu.home}" th:remove="tag">Home</span>
+                                    </a>
+                                </li>
+                                <li class="u-service-info unselectable">
+                                    <a href="/" class="menu-tab">
+                                        <span class="icon fontawesome-wrench scnd-font-color"></span>
+                                        <span th:text="#{navMenu.service_and_tariff}" th:remove="tag">Service and tariff</span>
+                                    </a>
+                                </li>
+                                <li class="u-office unselectable">
+                                    <a href="/" class="menu-tab">
+                                        <span class="icon fontawesome-user scnd-font-color"></span>
+                                        <span th:text="#{navMenu.personal_office}" th:remove="tag">Personal office</span>
+                                    </a>
+                                </li>
+                                <li class="u-about unselectable">
+                                    <a href="/" class="menu-tab">
+                                        <span class="icon entypo-info scnd-font-color"></span>
+                                        <span th:text="#{navMenu.about}" th:remove="tag">About</span>
+                                    </a>
+                                </li>
+                                <th:block sec:authorize="isAuthenticated()">
+                                    <li class="u-settings drop-down-list unselectable">
+                                        <a href class="menu-tab">
+                                            <span class="icon entypo-cog"></span>
+                                            <span th:text="#{navMenu.settings}" th:remove="tag">Settings</span>
+                                        </a>
+                                        <ul>
+                                            <li sec:authorize="hasRole('ROLE_ADMIN_COMPANY')"><a href="/home/add-home" th:text="#{navMenu.addHome}">Add home</a></li>
+                                            <!--/*@thymesVar id="getCurrent" type="ua.model.LegalEntity"*/-->
+                                            <th:block th:if="${legalEntity.defaultHome != null}">
+                                                <li>
+                                                    <a th:href="@{'/home/edit-home/' + ${legalEntity.defaultHome.id}}"
+                                                       th:text="#{navMenu.info_about_home}">Info about home</a>
+                                                </li>
+                                                <li><a href="/flat" th:text="#{navMenu.flats}">Flats</a></li>
+                                                <li><a href="/lodger" th:text="#{navMenu.lodgers}">Lodgers</a></li>
+                                                <li><a href="/service" th:text="#{navMenu.service_and_tariff}">Service and tariff</a></li>
+                                                <li><a href="/connected-service/edit" th:text="#{navMenu.service_and_flats}">Service and flats</a></li>
+                                            </th:block>
+                                        </ul>
+                                    </li>
+                                    <li class="u-registers drop-down-list unselectable">
+                                        <a href class="menu-tab">
+                                            <span class="icon fontawesome-list-alt"></span>
+                                            <span th:text="#{navMenu.registers}" th:remove="tag">Registers</span>
+                                        </a>
+                                        <ul>
+                                            <!--/*@thymesVar id="getCurrent" type="ua.model.LegalEntity"*/-->
+                                            <th:block th:if="${legalEntity.defaultHome != null}">
+                                                <li><a href="/accrual" th:text="#{navMenu.register_charges}">Register of charges</a></li>
+                                                <li><a href="/payment" th:text="#{navMenu.register_payments}">Register of payments</a></li>
+                                                <li><a href="/compensation" th:text="#{navMenu.register_compensations}">Register of compensations</a></li>
+                                            </th:block>
+                                        </ul>
+                                    </li>
+                                </th:block>
+                            </ul>
+                        </div>
+
+                        <div class="right-menu">
+                            <ul id="nav-menu-header-right" class="nav-menu">
+                                <li class="list-homes" sec:authorize="isAuthenticated()">
+                                    <a href class="btn btn-default dropdown-toggle" data-toggle="dropdown">
+                                        <!--/*@thymesVar id="getCurrent" type="ua.model.LegalEntity"*/-->
+                                        <span th:text="${legalEntity.defaultHome.shortAddress}" th:remove="tag">defaultHome</span>
+                                        <span class="caret"></span>
+                                    </a>
+                                    <ul class="dropdown-menu">
+                                        <!--/*@thymesVar id="homes" type="List<ua.model.Home>"*/-->
+                                        <th:block th:each="home : ${homes}">
+                                            <!--/*@thymesVar id="homes" type="ua.model.Home"*/-->
+                                            <!--/*@thymesVar id="legalEntity" type="ua.model.LegalEntity"*/-->
+                                            <th:block th:if="${home.id != legalEntity.defaultHome.id}">
+                                                <li><a th:href="${'/entity/set_default_home/' + home.id}" th:text="${home.shortAddress}"></a></li>
+                                            </th:block>
+                                        </th:block>
+                                    </ul>
+                                </li>
+                                <th:block th:if="${#locale.toString()} == 'ru'">
+                                    <li class="border-left-line">
+                                        <a th:href="${#request.getContextPath() + '?lang=ua'}" class="menu-tab-right"><abbr title="Українська">UA</abbr></a>
+                                    </li>
+                                    <li class="is-active"><abbr class="menu-tab-right" title="Русский">RU</abbr></li>
+                                </th:block>
+                                <th:block th:if="${#locale.toString()} == 'ua'">
+                                    <li class="is-active border-left-line"><abbr class="menu-tab-right" title="Українська">UA</abbr></li>
+                                    <li><a th:href="${#request.getContextPath() + '?lang=ru'}" class="menu-tab-right"><abbr title="Русский">RU</abbr></a></li>
+                                </th:block>
+                                <th:block sec:authorize="isAuthenticated()">
+                                    <li class="border-left-line">
+                                        <a href="/user-profile" th:title="#{navMenu.profile}" class="menu-tab-right"><span class="user-profile-icon"></span></a>
+                                    </li>
+                                    <li class="u-logout border-left-line unselectable">
+                                        <a href="/logout" class="menu-tab-right" data-method="post">
+                                            <span class="icon entypo-logout scnd-font-color"></span>
+                                            <span th:taxt="#{navMenu.logout}" th:remove="tag">Logout</span>
+                                        </a>
+                                    </li>
+                                </th:block>
+                                <li class="u-login border-left-line" sec:authorize="isAnonymous()">
+                                    <a href class="menu-tab-right" data-toggle="modal" data-target="#modal-login">
+                                        <span class="icon entypo-login scnd-font-color"></span>
+                                        <span th:text="#{page.button.login}" th:remove="tag">Login</span>
+                                    </a>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </nav>
+            </div>
+        </div>
+    </header>
+    <!-- /.Menu -->
+
+    <!-- Modal Form -->
+    <div id="modal-login" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="loginLabel">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <form id="login-form" class="form-horizontal" th:action="@{/login}" method="post" role="form">
+
+                    <div class="modal-header">
+                        <h4 class="modal-title" th:text="#{page.button.login}">Login</h4>
+                        <button type="button" class="close" data-dismiss="modal">&#215;</button>
+                    </div>
+
+                    <div class="modal-body">
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="form-group required">
+                                    <label class="col-sm-5 control-label" for="username" th:text="#{label.user.username}"></label>
+                                    <div class="col-sm-7">
+                                        <input id="username" class="form-control" type="text" name="username" aria-required="true"/>
+                                    </div>
+                                </div>
+                                <div class="form-group required">
+                                    <label class="col-sm-5 control-label" for="password" th:text="#{label.user.password}"></label>
+                                    <div class="col-sm-7">
+                                        <input id="password" class="form-control" type="password" name="password" aria-required="true"/>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <div class="col-sm-7 col-sm-offset-5 checkbox">
+                                        <input id="rememberMe" type="checkbox" name="rememberMe" value="1" checked/>
+                                        <label for="rememberMe" th:text="#{label.user.remember-me}"></label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="modal-footer">
+                        <button type="submit" class="btn btn-primary" name="login-button" th:text="#{page.button.login}"></button>
+                        <button type="submit" class="btn btn-default" data-dismiss="modal" th:text="#{page.button.cancel}"></button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    <!-- /.Modal Form -->
+    <style>
+        #modal-login  {
+            text-align: center;
+            padding: 0!important;
+        }
+
+        #modal-login:before {
+            content: '';
+            display: inline-block;
+            height: 100%;
+            vertical-align: middle;
+            margin-right: -4px;
+        }
+        #modal-login .modal-dialog {
+            width: 500px;
+            display: inline-block;
+            text-align: left;
+            vertical-align: middle;
+        }
+    </style>
+</th:block>
+</body>
+</html>

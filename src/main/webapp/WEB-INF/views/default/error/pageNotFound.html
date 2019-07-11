@@ -1,0 +1,26 @@
+<!DOCTYPE HTML>
+<!--/*@thymesVar id="theme" type="java.lang.String"*/-->
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+
+      layout:decorate="~{${theme + '/templates/main'}}">
+<head>
+    <meta charset="utf-8">
+    <title>Not found page</title>
+</head>
+<body>
+<div layout:fragment="content" th:remove="tag">
+
+    <div class="col-lg-12">
+        <div class="site-error">
+            <div class="alert alert-danger">
+                <h1 th:text="#{page.page_not_found}">Page not found</h1>
+                <h3 th:text="#{page.check_address_or_go_main_page}">Check address or go main page</h3>
+            </div>
+        </div>
+    </div>
+
+</div>
+</body>
+</html>

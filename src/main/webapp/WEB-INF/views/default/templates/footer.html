@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+<body>
+<th:block th:fragment="footer">
+    <footer>
+        <div class="container code">
+            <div class="container">
+                <p class="pull-left" th:text="${'&copy; iHome-online ' + #dates.format(#dates.createNow(), 'yyyy')}">&copy; iHome-online date</p>
+            </div>
+        </div>
+    </footer>
+    <style>
+        .code div div{
+            display: inline-block;
+        }
+    </style>
+</th:block>
+</body>
+</html>

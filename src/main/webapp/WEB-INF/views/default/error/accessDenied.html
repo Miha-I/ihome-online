@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{${theme + '/templates/main'}}">
+<head>
+    <meta charset="utf-8">
+    <title>Access Denied</title>
+</head>
+<body>
+<div layout:fragment="content" th:remove="tag">
+
+    <div class="col-lg-12">
+        <div class="site-error">
+            <div class="alert alert-danger">
+                <h1 th:text="#{page.you_do_not_have_access_to_this_page}"></h1>
+            </div>
+        </div>
+    </div>
+
+</div>
+</body>
+</html>

@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+
+
+<body>
+<th:block th:fragment="footer">
+    <footer>
+        <div class="container code">
+            <!--<p>-->
+                <!--&copy; Memorynotfound.com-->
+                <!--<span sec:authorize="isAuthenticated()" style="display: inline-block;">-->
+                    <!--| Logged user: <span sec:authentication="name"></span> |-->
+                    <!--Roles: <span sec:authentication="principal.authorities"></span> |-->
+                    <!--<a th:href="@{/logout}">Sign Out</a>-->
+                <!--</span>-->
+            <!--</p>-->
+            <div sec:authorize="isAuthenticated()">
+                Text visible only to authenticated users.
+            </div>
+            <div>1.<code>sec:authentication="name"</code><div sec:authentication="name">name</div></div>
+            <div>3.<code>sec:authorize="isAuthenticated()"</code><div  sec:authorize="isAuthenticated()" >true</div></div>
+            <div>4.<code>sec:authorize="hasRole('ROLE_ADMIN')"</code><div  sec:authorize="hasRole('ROLE_ADMIN')" > IS ADMIN </div></div>
+            <div>6.<code>sec:authorize="${hasRole('ADMIN')}"</code><div  sec:authorize="${hasRole('ADMIN')}" > IS ADMIN </div></div>
+            <div>7.<code>sec:authorize="${hasRole(#vars.role_admin)}"</code><div  sec:authorize="${hasRole(#vars.role_admin)}" > IS ADMIN </div></div>
+            <div>8.<code>sec:authorize="isAuthenticated()"</code><div sec:authorize="isFullyAuthenticated()">isFullyAuthenticated()</div></div>
+            <div>9.<code>sec:authorize="isAuthenticated()"</code><div sec:authorize="isAuthenticated()">isAuthenticated()</div></div>
+            <div>10.<code>sec:authorize="isAnonymous()"</code><div sec:authorize="!isAnonymous()">isAnonymous()</div></div>
+            <div>11.<code>sec:authorize="isAuthenticated() == true"</code><div sec:authorize="isAuthenticated() == true"><a th:href="@{/logout}">Log out</a></div></div>
+            <div>12.<code>sec:authorize="isAnonymous() == true"</code><div sec:authorize="!isAnonymous() == true"><a th:href="@{/login}">Log in</a></div></div>
+            <div>13.<code>th:block sec:authorize="isAuthenticated()"</code>
+                <th:block sec:authorize="!hasRole('ROLE_ANONYMOUS')">
+                <span>isAuthenticated</span>
+            </th:block></div>
+
+
+        </div>
+    </footer>
+    <style>
+        .code div div{
+            display: inline-block;
+        }
+    </style>
+
+</th:block>
+</body>
+</html>
